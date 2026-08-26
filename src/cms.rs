@@ -82,10 +82,8 @@ fn extract_meta_generator(body: &str) -> Option<String> {
 
     let value_start = if let Some(idx) = tag_lower.find("content=\"") {
         idx + 9
-    } else if let Some(idx) = tag_lower.find("content='") {
-        idx + 9
     } else {
-        return None;
+        tag_lower.find("content='")? + 9
     };
 
     let quote = if tag_lower.as_bytes().get(value_start.wrapping_sub(1)) == Some(&b'"') {
