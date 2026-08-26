@@ -73,8 +73,10 @@ target, no surprises.
 
 ```toml
 [dependencies]
-stackprint = "0.1"
+stackprint = { git = "https://github.com/yehormamaiev/stackprint" }
 ```
+
+Once it's published to crates.io: `stackprint = "0.1"`.
 
 ## License
 
