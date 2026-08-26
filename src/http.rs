@@ -22,7 +22,12 @@ pub struct HttpResponse {
 impl HttpResponse {
     /// Build a response from status, headers and an optional body (HTTP/1.1 assumed).
     pub fn new(status: u16, headers: Vec<(String, String)>, body: Option<String>) -> Self {
-        Self { status, headers, body, http_version: HttpVersion::Http11 }
+        Self {
+            status,
+            headers,
+            body,
+            http_version: HttpVersion::Http11,
+        }
     }
 
     /// Set the HTTP version (builder style).

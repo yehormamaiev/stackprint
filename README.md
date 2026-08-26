@@ -1,5 +1,8 @@
 # stackprint
 
+[![CI](https://github.com/yehormamaiev/stackprint/actions/workflows/ci.yml/badge.svg)](https://github.com/yehormamaiev/stackprint/actions/workflows/ci.yml)
+[![License](https://img.shields.io/badge/license-MIT%20OR%20Apache--2.0-blue.svg)](#license)
+
 **Passive web technology fingerprinting in Rust.** Give it one HTTP response — get back what the
 site is built with: web server, backend framework, JS frontend, CMS, WAF, CDN, database, auth
 scheme, and protocol features (GraphQL, gRPC, WebSocket, OpenAPI, HTTP/3).

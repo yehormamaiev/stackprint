@@ -8,10 +8,7 @@ pub struct CmsDetection {
     pub confidence: f64,
 }
 
-pub fn detect_cms(
-    headers: &[(String, String)],
-    body: Option<&str>,
-) -> Option<CmsDetection> {
+pub fn detect_cms(headers: &[(String, String)], body: Option<&str>) -> Option<CmsDetection> {
     if let Some(result) = detect_from_meta_generator(body) {
         return Some(result);
     }
@@ -214,9 +211,7 @@ fn detect_from_headers(headers: &[(String, String)]) -> Option<CmsDetection> {
         });
     }
 
-    if util::has_header(headers, "x-shopid")
-        || util::has_header(headers, "x-shopify-stage")
-    {
+    if util::has_header(headers, "x-shopid") || util::has_header(headers, "x-shopify-stage") {
         return Some(CmsDetection {
             cms: Cms::Shopify,
             version: None,
@@ -238,7 +233,6 @@ mod tests {
             .collect()
     }
 
-
     #[test]
     fn detect_wordpress_from_generator() {
         let b = Some(r#"<meta name="generator" content="WordPress 6.5.2" />"#);
@@ -250,14 +244,18 @@ mod tests {
 
     #[test]
     fn detect_wordpress_from_body() {
-        let b = Some(r#"<link rel="stylesheet" href="/wp-content/themes/theme/style.css?ver=6.5" />"#);
+        let b =
+            Some(r#"<link rel="stylesheet" href="/wp-content/themes/theme/style.css?ver=6.5" />"#);
         let result = detect_cms(&[], b).unwrap();
         assert!(matches!(result.cms, Cms::WordPress));
     }
 
     #[test]
     fn detect_wordpress_from_header() {
-        let headers = h(&[("Link", r#"<https://example.com/wp-json/>; rel="https://api.w.org/""#)]);
+        let headers = h(&[(
+            "Link",
+            r#"<https://example.com/wp-json/>; rel="https://api.w.org/""#,
+        )]);
         let result = detect_cms(&headers, None).unwrap();
         assert!(matches!(result.cms, Cms::WordPress));
     }
@@ -329,9 +327,8 @@ mod tests {
 
     #[test]
     fn extract_meta_generator_single_quotes() {
-        let result = extract_meta_generator(
-            "<head><meta name='generator' content='Drupal 10' /></head>",
-        );
+        let result =
+            extract_meta_generator("<head><meta name='generator' content='Drupal 10' /></head>");
         assert_eq!(result, Some("Drupal 10".into()));
     }
 }

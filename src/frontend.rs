@@ -83,10 +83,7 @@ fn detect_from_body(body: Option<&str>) -> Option<FrontendDetection> {
         });
     }
 
-    if text.contains("jquery.min.js")
-        || text.contains("jquery.js")
-        || text.contains("jquery-")
-    {
+    if text.contains("jquery.min.js") || text.contains("jquery.js") || text.contains("jquery-") {
         return Some(FrontendDetection {
             frontend: Frontend::jQuery,
             version: extract_jquery_version(text),
@@ -109,8 +106,7 @@ fn detect_from_headers(headers: &[(String, String)]) -> Option<FrontendDetection
 }
 
 fn extract_react_version(body: &str) -> Option<String> {
-    util::extract_version(body, "react@")
-        .or_else(|| util::extract_version(body, "react/"))
+    util::extract_version(body, "react@").or_else(|| util::extract_version(body, "react/"))
 }
 
 fn extract_angular_version(body: &str) -> Option<String> {
@@ -141,7 +137,6 @@ fn extract_jquery_version(body: &str) -> Option<String> {
 mod tests {
     use super::*;
 
-
     #[test]
     fn detect_react() {
         let b = Some(r#"<div id="root" data-reactroot=""></div>"#);
@@ -151,7 +146,9 @@ mod tests {
 
     #[test]
     fn detect_react_with_version() {
-        let b = Some(r#"<script src="https://cdn.example.com/react@18.2.0/umd/react.production.min.js"></script>"#);
+        let b = Some(
+            r#"<script src="https://cdn.example.com/react@18.2.0/umd/react.production.min.js"></script>"#,
+        );
         let result = detect_frontend(&[], b).unwrap();
         assert!(matches!(result.frontend, Frontend::React));
         assert_eq!(result.version, Some("18.2.0".into()));
@@ -159,7 +156,9 @@ mod tests {
 
     #[test]
     fn detect_angular() {
-        let b = Some(r#"<html ng-app="myApp" ng-version="17.1.0"><body ng-controller="MainCtrl"></body></html>"#);
+        let b = Some(
+            r#"<html ng-app="myApp" ng-version="17.1.0"><body ng-controller="MainCtrl"></body></html>"#,
+        );
         let result = detect_frontend(&[], b).unwrap();
         assert!(matches!(result.frontend, Frontend::Angular));
         assert_eq!(result.version, Some("17.1.0".into()));
@@ -174,14 +173,18 @@ mod tests {
 
     #[test]
     fn detect_svelte() {
-        let b = Some(r#"<div class="svelte-1abc2de">content</div><script src="/__svelte/bundle.js"></script>"#);
+        let b = Some(
+            r#"<div class="svelte-1abc2de">content</div><script src="/__svelte/bundle.js"></script>"#,
+        );
         let result = detect_frontend(&[], b).unwrap();
         assert!(matches!(result.frontend, Frontend::Svelte));
     }
 
     #[test]
     fn detect_ember() {
-        let b = Some(r#"<div id="ember-application"><script src="/assets/ember.min.js"></script></div>"#);
+        let b = Some(
+            r#"<div id="ember-application"><script src="/assets/ember.min.js"></script></div>"#,
+        );
         let result = detect_frontend(&[], b).unwrap();
         assert!(matches!(result.frontend, Frontend::Ember));
     }

@@ -274,9 +274,7 @@ fn detect_from_body(body: Option<&str>) -> Option<BackendDetection> {
         });
     }
 
-    if lower.contains("laravel")
-        && (lower.contains("exception") || lower.contains("symfony\\"))
-    {
+    if lower.contains("laravel") && (lower.contains("exception") || lower.contains("symfony\\")) {
         return Some(BackendDetection {
             backend: Backend::Laravel,
             version: None,
@@ -300,9 +298,7 @@ fn detect_from_body(body: Option<&str>) -> Option<BackendDetection> {
         });
     }
 
-    if lower.contains("werkzeug")
-        || (lower.contains("flask") && lower.contains("debugger"))
-    {
+    if lower.contains("werkzeug") || (lower.contains("flask") && lower.contains("debugger")) {
         return Some(BackendDetection {
             backend: Backend::Flask,
             version: None,
@@ -339,7 +335,6 @@ mod tests {
             .map(|(k, v)| (k.to_string(), v.to_string()))
             .collect()
     }
-
 
     #[test]
     fn detect_express_from_powered_by() {

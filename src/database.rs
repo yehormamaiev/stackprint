@@ -2,10 +2,7 @@ use crate::technology::Database;
 
 use crate::util;
 
-pub fn detect_database(
-    headers: &[(String, String)],
-    body: Option<&str>,
-) -> Option<Database> {
+pub fn detect_database(headers: &[(String, String)], body: Option<&str>) -> Option<Database> {
     if let Some(db) = detect_from_error_patterns(body) {
         return Some(db);
     }
@@ -68,7 +65,8 @@ fn detect_from_error_patterns(body: Option<&str>) -> Option<Database> {
         return Some(Database::MongoDB);
     }
 
-    if lower.contains("redis") && (lower.contains("error") || lower.contains("connection refused")) {
+    if lower.contains("redis") && (lower.contains("error") || lower.contains("connection refused"))
+    {
         return Some(Database::Redis);
     }
     if lower.contains("redis::") || lower.contains("redis-server") {
@@ -96,7 +94,6 @@ fn detect_from_headers(headers: &[(String, String)]) -> Option<Database> {
 mod tests {
     use super::*;
 
-
     fn h(pairs: &[(&str, &str)]) -> Vec<(String, String)> {
         pairs
             .iter()
@@ -119,13 +116,19 @@ mod tests {
     #[test]
     fn detect_postgresql() {
         let b = Some("ERROR: relation \"users\" does not exist - PostgreSQL");
-        assert!(matches!(detect_database(&[], b), Some(Database::PostgreSQL)));
+        assert!(matches!(
+            detect_database(&[], b),
+            Some(Database::PostgreSQL)
+        ));
     }
 
     #[test]
     fn detect_postgresql_psycopg2() {
         let b = Some("psycopg2.OperationalError: FATAL: database does not exist");
-        assert!(matches!(detect_database(&[], b), Some(Database::PostgreSQL)));
+        assert!(matches!(
+            detect_database(&[], b),
+            Some(Database::PostgreSQL)
+        ));
     }
 
     #[test]
@@ -167,7 +170,10 @@ mod tests {
     #[test]
     fn detect_mysql_from_header() {
         let headers = h(&[("X-Powered-By", "phpMyAdmin")]);
-        assert!(matches!(detect_database(&headers, None), Some(Database::MySQL)));
+        assert!(matches!(
+            detect_database(&headers, None),
+            Some(Database::MySQL)
+        ));
     }
 
     #[test]

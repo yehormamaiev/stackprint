@@ -146,10 +146,7 @@ mod tests {
 
     #[test]
     fn any_header_value_search() {
-        let headers = h(&[
-            ("Server", "nginx"),
-            ("X-Powered-By", "Express"),
-        ]);
+        let headers = h(&[("Server", "nginx"), ("X-Powered-By", "Express")]);
         assert!(any_header_value_contains(&headers, "express"));
         assert!(!any_header_value_contains(&headers, "django"));
     }

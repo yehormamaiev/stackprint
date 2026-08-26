@@ -64,7 +64,11 @@ fn main() {
     if !fp.detected_technologies.is_empty() {
         println!("\ndetected:");
         for t in &fp.detected_technologies {
-            let ver = t.version.as_deref().map(|v| format!(" v{v}")).unwrap_or_default();
+            let ver = t
+                .version
+                .as_deref()
+                .map(|v| format!(" v{v}"))
+                .unwrap_or_default();
             println!("  {:<16} {:>3.0}%{ver}", t.name, t.confidence * 100.0);
         }
     }
@@ -72,6 +76,8 @@ fn main() {
 
 /// Печать строки `label: value` (или `(none)`), где `value` — Display-тип под `Option`.
 fn row<T: std::fmt::Display>(label: &str, value: &Option<T>) {
-    let text = value.as_ref().map_or_else(|| "(none)".to_string(), ToString::to_string);
+    let text = value
+        .as_ref()
+        .map_or_else(|| "(none)".to_string(), ToString::to_string);
     println!("{:<10}{text}", format!("{label}:"));
 }

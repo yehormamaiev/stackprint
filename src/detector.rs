@@ -170,11 +170,7 @@ mod tests {
     use crate::http::HttpVersion;
     use crate::technology::*;
 
-    fn make_response(
-        status: u16,
-        headers: Vec<(&str, &str)>,
-        body_text: &str,
-    ) -> HttpResponse {
+    fn make_response(status: u16, headers: Vec<(&str, &str)>, body_text: &str) -> HttpResponse {
         HttpResponse {
             status,
             headers: headers
@@ -268,11 +264,7 @@ mod tests {
 
     #[test]
     fn spring_from_jsessionid() {
-        let resp = make_response(
-            200,
-            vec![("Set-Cookie", "JSESSIONID=abc; Path=/")],
-            "",
-        );
+        let resp = make_response(200, vec![("Set-Cookie", "JSESSIONID=abc; Path=/")], "");
 
         let fp = analyze_response(&resp);
 
@@ -294,11 +286,7 @@ mod tests {
 
     #[test]
     fn auth_detection() {
-        let resp = make_response(
-            401,
-            vec![("WWW-Authenticate", "Bearer realm=\"api\"")],
-            "",
-        );
+        let resp = make_response(401, vec![("WWW-Authenticate", "Bearer realm=\"api\"")], "");
 
         let fp = analyze_response(&resp);
 
@@ -320,11 +308,7 @@ mod tests {
 
     #[test]
     fn graphql_detection() {
-        let resp = make_response(
-            200,
-            vec![("Content-Type", "application/graphql+json")],
-            "",
-        );
+        let resp = make_response(200, vec![("Content-Type", "application/graphql+json")], "");
 
         let fp = analyze_response(&resp);
 
@@ -335,10 +319,7 @@ mod tests {
     fn grpc_detection() {
         let resp = make_response(
             200,
-            vec![
-                ("Content-Type", "application/grpc"),
-                ("grpc-status", "0"),
-            ],
+            vec![("Content-Type", "application/grpc"), ("grpc-status", "0")],
             "",
         );
 

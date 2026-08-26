@@ -1,9 +1,6 @@
 use crate::util;
 
-pub fn detect_graphql_from_response(
-    headers: &[(String, String)],
-    body: Option<&str>,
-) -> bool {
+pub fn detect_graphql_from_response(headers: &[(String, String)], body: Option<&str>) -> bool {
     if util::header_contains(headers, "content-type", "application/graphql") {
         return true;
     }
@@ -31,10 +28,7 @@ pub fn detect_grpc(headers: &[(String, String)]) -> bool {
         || util::has_header(headers, "grpc-encoding")
 }
 
-pub fn detect_websocket_from_response(
-    headers: &[(String, String)],
-    body: Option<&str>,
-) -> bool {
+pub fn detect_websocket_from_response(headers: &[(String, String)], body: Option<&str>) -> bool {
     if util::header_contains(headers, "upgrade", "websocket") {
         return true;
     }
@@ -101,7 +95,6 @@ mod tests {
             .map(|(k, v)| (k.to_string(), v.to_string()))
             .collect()
     }
-
 
     #[test]
     fn detect_graphql_from_header() {

@@ -2,10 +2,7 @@ use crate::technology::AuthType;
 
 use crate::util;
 
-pub fn detect_auth_type(
-    headers: &[(String, String)],
-    body: Option<&str>,
-) -> Option<AuthType> {
+pub fn detect_auth_type(headers: &[(String, String)], body: Option<&str>) -> Option<AuthType> {
     if let Some(auth) = detect_from_www_authenticate(headers) {
         return Some(auth);
     }
@@ -112,9 +109,7 @@ fn detect_from_body(body: Option<&str>) -> Option<AuthType> {
         return Some(AuthType::SAML);
     }
 
-    if lower.contains("oauth")
-        && (lower.contains("authorize") || lower.contains("redirect_uri"))
-    {
+    if lower.contains("oauth") && (lower.contains("authorize") || lower.contains("redirect_uri")) {
         return Some(AuthType::OAuth);
     }
 
@@ -126,9 +121,7 @@ fn detect_from_body(body: Option<&str>) -> Option<AuthType> {
 }
 
 pub fn detect_mfa(headers: &[(String, String)], body: Option<&str>) -> bool {
-    if util::has_header(headers, "x-github-otp")
-        || util::has_header(headers, "x-otp-required")
-    {
+    if util::has_header(headers, "x-github-otp") || util::has_header(headers, "x-otp-required") {
         return true;
     }
 
@@ -159,7 +152,6 @@ mod tests {
             .collect()
     }
 
-
     #[test]
     fn detect_basic_auth() {
         let headers = h(&[("WWW-Authenticate", "Basic realm=\"example\"")]);
@@ -169,7 +161,10 @@ mod tests {
     #[test]
     fn detect_bearer_auth() {
         let headers = h(&[("WWW-Authenticate", "Bearer realm=\"api\"")]);
-        assert_eq!(detect_auth_type(&headers, None), Some(AuthType::BearerToken));
+        assert_eq!(
+            detect_auth_type(&headers, None),
+            Some(AuthType::BearerToken)
+        );
     }
 
     #[test]
@@ -207,7 +202,9 @@ mod tests {
 
     #[test]
     fn detect_oauth_from_body() {
-        let b = Some(r#"<a href="/oauth/authorize?redirect_uri=https://example.com/callback">Login</a>"#);
+        let b = Some(
+            r#"<a href="/oauth/authorize?redirect_uri=https://example.com/callback">Login</a>"#,
+        );
         assert_eq!(detect_auth_type(&[], b), Some(AuthType::OAuth));
     }
 

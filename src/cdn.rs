@@ -37,9 +37,7 @@ fn detect_from_cdn_headers(headers: &[(String, String)]) -> Option<Cdn> {
         return Some(Cdn::AzureCdn);
     }
 
-    if util::header_contains(headers, "via", "google")
-        || util::has_header(headers, "x-goog-hash")
-    {
+    if util::header_contains(headers, "via", "google") || util::has_header(headers, "x-goog-hash") {
         return Some(Cdn::GoogleCloud);
     }
 

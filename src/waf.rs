@@ -49,8 +49,7 @@ fn detect_from_headers(headers: &[(String, String)]) -> Option<WafDetection> {
         });
     }
 
-    if util::has_header(headers, "x-iinfo")
-        || util::header_contains(headers, "server", "incapsula")
+    if util::has_header(headers, "x-iinfo") || util::header_contains(headers, "server", "incapsula")
     {
         return Some(WafDetection {
             waf: Waf::Imperva,
@@ -101,9 +100,7 @@ fn detect_from_cookies(headers: &[(String, String)]) -> Option<WafDetection> {
     for cookie in &cookies {
         let lower = cookie.to_lowercase();
 
-        if lower.contains("__cfduid")
-            || lower.contains("cf_clearance")
-            || lower.contains("__cf_bm")
+        if lower.contains("__cfduid") || lower.contains("cf_clearance") || lower.contains("__cf_bm")
         {
             return Some(WafDetection {
                 waf: Waf::Cloudflare,
@@ -181,17 +178,14 @@ fn detect_from_body(body: Option<&str>) -> Option<WafDetection> {
         });
     }
 
-    if lower.contains("aws waf")
-        || (lower.contains("request blocked") && lower.contains("aws"))
-    {
+    if lower.contains("aws waf") || (lower.contains("request blocked") && lower.contains("aws")) {
         return Some(WafDetection {
             waf: Waf::AwsWaf,
             confidence: 0.8,
         });
     }
 
-    if lower.contains("akamai")
-        && (lower.contains("access denied") || lower.contains("reference#"))
+    if lower.contains("akamai") && (lower.contains("access denied") || lower.contains("reference#"))
     {
         return Some(WafDetection {
             waf: Waf::Akamai,
@@ -233,7 +227,6 @@ mod tests {
             .map(|(k, v)| (k.to_string(), v.to_string()))
             .collect()
     }
-
 
     #[test]
     fn detect_cloudflare_from_headers() {
