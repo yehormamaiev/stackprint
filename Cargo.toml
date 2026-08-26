@@ -1,0 +1,18 @@
+[package]
+name = "stackprint"
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.74"
+license = "MIT OR Apache-2.0"
+description = "Passive web technology fingerprinting — detect a site's server, framework, CMS, WAF, CDN, database and more from a single HTTP response. Network-free."
+repository = "https://github.com/yehormamaiev/stackprint"
+readme = "README.md"
+keywords = ["fingerprint", "http", "detection", "recon", "security"]
+categories = ["web-programming", "network-programming"]
+
+[dependencies]
+serde = { version = "1", features = ["derive"] }
+strum = { version = "0.26", features = ["derive"] }
+
+[dev-dependencies]
+ureq = "2"
